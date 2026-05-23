@@ -71,7 +71,10 @@ export class Hysteria2Parser extends Faker {
         proxy.server = this.originConfig.hostname ?? '';
         proxy.port = Number(this.originConfig.port ?? 0);
         if (proxy.type === 'hysteria2' && hasKey(proxy, 'password')) {
-            proxy.password = this.originConfig?.searchParams?.get('password') ?? '';
+            proxy.password = this.originConfig?.searchParams?.get('password') ?? this.originConfig.username ?? '';
+        }
+        if (proxy.type === 'hysteria2' && hasKey(proxy, 'auth')) {
+            proxy.auth = this.originConfig?.searchParams?.get('auth') ?? this.originConfig.username ?? '';
         }
 
         if (hasKey(proxy, 'down')) {
@@ -159,3 +162,4 @@ export class Hysteria2Parser extends Faker {
         return this.#confuseConfig;
     }
 }
+
