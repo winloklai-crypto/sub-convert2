@@ -2,6 +2,7 @@ import type { Hysteria2Parser } from './protocol/hysteria2';
 import type { SsParser } from './protocol/ss';
 import type { SsrParser } from './protocol/ssr';
 import type { TrojanParser } from './protocol/trojan';
+import type { TuicParser } from './protocol/tuic';
 import type { VlessParser } from './protocol/vless';
 import type { VmessParser } from './protocol/vmess';
 
@@ -60,4 +61,6 @@ export interface SsConfig extends BaseConfig {}
 
 export interface Hysteria2Config extends BaseConfig {}
 
-export type ParserType = VlessParser | VmessParser | TrojanParser | SsParser | Hysteria2Parser | SsrParser;
+export interface TuicConfig extends BaseConfig {}
+
+export type ParserType = VlessParser | VmessParser | TrojanParser | SsParser | Hysteria2Parser | TuicParser | SsrParser;

@@ -5,6 +5,7 @@ export function getProtocolConfig(): { label: string; value: string }[] {
         { label: 'Trojan', value: 'trojan' },
         { label: 'Shadowsocks', value: 'shadowsocks' },
         { label: 'ShadowsocksR', value: 'shadowsocksr' },
+        { label: 'TUIC', value: 'tuic' },
         { label: 'Hysteria', value: 'hysteria' },
         { label: 'Hysteria2', value: 'hysteria2' },
         { label: 'HY2', value: 'hy2' }

@@ -129,7 +129,7 @@ export function showPage(request: Request, env: Env): Response {
                             <sub-form-item label="定制订阅">
                                 <div class="input-group">
                                     <input type="text" value="" disabled id="form-subscribe" />
-                                    <sub-button type="default" onclick="sub.copySubUrl('form-subscribe')">
+                                    <sub-button type="default" id="copy-sub-btn">
                                         <svg
                                             viewBox="64 64 896 896"
                                             focusable="false"
@@ -151,7 +151,7 @@ export function showPage(request: Request, env: Env): Response {
                             <sub-form-item label="订阅短链">
                                 <div class="input-group">
                                     <input type="text" value="" disabled id="form-short-url" />
-                                    <sub-button type="default" onclick="sub.copySubUrl('form-short-url')">
+                                    <sub-button type="default" id="copy-short-url-btn">
                                         <svg
                                             viewBox="64 64 896 896"
                                             focusable="false"
@@ -234,6 +234,9 @@ export function showPage(request: Request, env: Env): Response {
                         #formSubscribe = this.#$('#form-subscribe');
                         #formShortUrl = this.#$('#form-short-url');
 
+                        #copySubBtn = this.#$('#copy-sub-btn');
+                        #copyShortUrlBtn = this.#$('#copy-short-url-btn');
+
                         #generateSubBtn = this.#$('#generate-sub-btn');
                         #generateShortUrlBtn = this.#$('#generate-short-url-btn');
 
@@ -274,6 +277,14 @@ export function showPage(request: Request, env: Env): Response {
 
                             this.#headerIcon.addEventListener('click', () => {
                                 window.open('https://github.com/jwyGithub/sub-convert');
+                            });
+
+                            this.#copySubBtn.addEventListener('click', () => {
+                                this.copySubUrl('form-subscribe');
+                            });
+
+                            this.#copyShortUrlBtn.addEventListener('click', () => {
+                                this.copySubUrl('form-short-url');
                             });
 
 
@@ -377,28 +388,32 @@ export function showPage(request: Request, env: Env): Response {
                         async copyToClipboard(text) {
                             try {
                                 if (navigator.clipboard && window.isSecureContext) {
-                                    // 优先使用 Clipboard API
-                                    await navigator.clipboard.writeText(text);
-                                    return true;
-                                } else {
-                                    // 降级使用 document.execCommand
-                                    const textArea = document.createElement('textarea');
-                                    textArea.value = text;
-                                    textArea.style.position = 'fixed';
-                                    textArea.style.left = '-999999px';
-                                    textArea.style.top = '-999999px';
-                                    document.body.appendChild(textArea);
-                                    textArea.focus();
-                                    textArea.select();
-
-                                    const success = document.execCommand('copy');
-                                    textArea.remove();
-
-                                    if (!success) {
-                                        throw new Error('复制失败');
+                                    try {
+                                        // 优先使用 Clipboard API
+                                        await navigator.clipboard.writeText(text);
+                                        return true;
+                                    } catch {
+                                        // Clipboard API 可能被浏览器权限策略拦截，继续走降级方案
                                     }
-                                    return true;
                                 }
+
+                                // 降级使用 document.execCommand
+                                const textArea = document.createElement('textarea');
+                                textArea.value = text;
+                                textArea.style.position = 'fixed';
+                                textArea.style.left = '-999999px';
+                                textArea.style.top = '-999999px';
+                                document.body.appendChild(textArea);
+                                textArea.focus();
+                                textArea.select();
+
+                                const success = document.execCommand('copy');
+                                textArea.remove();
+
+                                if (!success) {
+                                    throw new Error('复制失败');
+                                }
+                                return true;
                             } catch (error) {
                                 notification.error('复制失败: ' + (error.message || '未知错误'));
                                 return false;
@@ -420,4 +435,3 @@ export function showPage(request: Request, env: Env): Response {
         })
     });
 }
-

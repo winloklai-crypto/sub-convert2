@@ -4,6 +4,7 @@ import { hysteria2Convert } from './protocol/hysteria2';
 import { shadowsocksConvert } from './protocol/shadowsocks';
 import { shadowsocksRConvert } from './protocol/shadowsocksR';
 import { trojanConvert } from './protocol/trojan';
+import { tuicConvert } from './protocol/tuic';
 import { vlessConvert } from './protocol/vless';
 import { vmessConvert } from './protocol/vmess';
 
@@ -28,6 +29,10 @@ export function getYamlProxies(proxies: ClashType['proxies']): string[] {
             }
             if (proxy.type === 'ssr') {
                 proxiesList.push(shadowsocksRConvert(proxy));
+            }
+
+            if (proxy.type === 'tuic') {
+                proxiesList.push(tuicConvert(proxy));
             }
 
             if (proxy.type === 'hysteria2' || proxy.type === 'hy2') {

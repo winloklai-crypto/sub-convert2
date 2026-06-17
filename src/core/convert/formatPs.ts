@@ -1,5 +1,5 @@
 import type { ParserType } from '../parser/types';
-import { Hysteria2Parser, SsParser, SsrParser, TrojanParser, VlessParser, VmessParser } from '../parser';
+import { Hysteria2Parser, SsParser, SsrParser, TrojanParser, TuicParser, VlessParser, VmessParser } from '../parser';
 
 export class FormatPs {
     private existVps: string[] = [];
@@ -64,6 +64,9 @@ export class FormatPs {
         }
         if (vps.startsWith('ssr://')) {
             return new SsrParser(vps);
+        }
+        if (vps.startsWith('tuic://')) {
+            return new TuicParser(vps);
         }
         if (vps.startsWith('hysteria2://') || vps.startsWith('hysteria://') || vps.startsWith('hy2://')) {
             return new Hysteria2Parser(vps);
